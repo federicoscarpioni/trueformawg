@@ -6,6 +6,14 @@ used are some
 import pyvisa
 import numpy as np
 
+class VISAdevices():
+    def __init__(self):
+        self.resource = pyvisa.ResourceManager()
+        self.update_list()
+        
+    def update_list(self):
+        self.list = self.resource.list_resources()
+
 class TrueFormAWG():
     '''
     This class is used to control the Trueform arbitrary waveform generator (awg).
@@ -120,12 +128,22 @@ class TrueFormAWG():
         self.rm.close()
         
 
-def import_awg(multisine_path):
+def import_awg_npy(multisine_path):
     ''' 
     Load awg in memory from npy file and convert to proper type and to list to 
     be accepted by the waveform generator.
     '''
     multisine = np.load(multisine_path)
+    multisine = multisine.astype(np.float32)
+    multisine = multisine.tolist()
+    return multisine
+
+def import_awg_txt(multisine_path):
+    ''' 
+    Load awg in memory from npy file and convert to proper type and to list to 
+    be accepted by the waveform generator.
+    '''
+    multisine = np.loadtxt(multisine_path)
     multisine = multisine.astype(np.float32)
     multisine = multisine.tolist()
     return multisine
@@ -138,9 +156,9 @@ if __name__ == '__main__':
     # multisine = np.load(multisine_path)
     # multisine = multisine.astype(np.float32)
     # multisine = multisine.tolist()
-    multisine = import_awg(multisine_path)
+    multisine = import_awg_npy(multisine_path)
     trueform_address = 'USB0::0x0957::0x4B07::MY59000581::0::INSTR'
-    awg_ch1 = TrueformWaveformGen(trueform_address,1)
+    awg_ch1 = TrueFormAWG(trueform_address,1)
     awg_ch1.avalable_memory()
     awg_ch1.clear_ch_mem()
     awg_ch1.avalable_memory()
