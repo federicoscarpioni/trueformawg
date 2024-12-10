@@ -13,7 +13,7 @@ awg_ch1.load_awf('ms_galvano', multisine_potentio) # Keep the name short or it g
 awg_ch1.avalable_memory()
 awg_ch1.select_awf('ms_galvano')
 awg_ch1.set_Z_out_infinite()
-awg_ch1.set_sample_rate(10000) # !!! Softcode this!
+awg_ch1.set_sample_rate(10000)
 awg_ch1.set_amplitude(0.050) 
 # awg_ch1.set_offset(0)
 awg_ch1.turn_on()
