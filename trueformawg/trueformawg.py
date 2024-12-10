@@ -51,10 +51,7 @@ class TrueFormAWG():
     def clear_ch_mem(self):
         self.device.write(f':SOURce{self.channel}:DATA:VOLatile:CLEar')
         print(f'Cleared memory of channel {self.channel}')
-        
-    # def clear_ch2(self):
-    #     self.device.write(':SOURce%d:DATA:VOLatile:CLEar' % (2))
-    #     print('Cleared memory of channel 2')
+
         
     def load_awf(self, AWFname, AWF):    
         ''' 
@@ -85,38 +82,33 @@ class TrueFormAWG():
 
     
     def set_sample_rate(self, sampleRate):
-        '''
-        Update the value of AWF sample rate
-        
-        Parameters
-        ----------
-        AWFname: string
-                 Name of the waveform to load, must contain ".arb" extension.
-        '''
-        
         self.device.write(':SOURce%d:FUNCtion:ARBitrary:SRATe %G' % (self.channel, sampleRate))
 
 
     def set_amplitude(self, amplitude):
-        '''Update the value of AWF amplitude (reference from msq not peak to peak)''' #!!! This has to be checked
-
         self.device.write(':SOURce%d:VOLTage %G' % (self.channel, amplitude)) 
         
      
     def set_offset(self, offset):
-        '''Update the value of AWF offset voltage'''
-
         self.device.write(':SOURce%d:VOLTage:OFFSet %G' % (self.channel, offset))
         
         
     def set_Z_out_infinite(self):
-        '''Set the output impedance value of the Truferom AWG to inifinite'''
-
         self.device.write(':OUTPut%d:LOAD %s' % (self.channel, 'INF'))
-        
-        
+
+    def set_Z_out(self, z_out):
+        self.device.write(':OUTPut%d:LOAD %s' % (self.channel, z_out))
+
+    def combine_channels(self, base_channel, source_channel):
+        '''
+        Combine the signals digitally before sending to the DAC.
+        '''
+        self.device.write(':SOURce%d:COMBine:FEED%d'% (base_channel, source_channel))
+
+    def set_indipendent(self):
+        self.device.write(':SOURce%d:COMBine:FEED%d' % (self.channel, None))
+
     def turn_on(self):
-        
         self.device.write(':OUTPut%d %d' % (self.channel, 1)) 
         
                         
@@ -148,23 +140,3 @@ def import_awg_txt(multisine_path):
     multisine = multisine.tolist()
     return multisine
     
-#%%
-    
-if __name__ == '__main__':
-    import numpy as np
-    multisine_path = 'C:/Users/prolibs/Documents/Users_files/Federico/Python_code/dEIS_waveform_generation/CC003003_5k-10m_8ptd.npy'
-    # multisine = np.load(multisine_path)
-    # multisine = multisine.astype(np.float32)
-    # multisine = multisine.tolist()
-    multisine = import_awg_npy(multisine_path)
-    trueform_address = 'USB0::0x0957::0x4B07::MY59000581::0::INSTR'
-    awg_ch1 = TrueFormAWG(trueform_address,1)
-    awg_ch1.avalable_memory()
-    awg_ch1.clear_ch_mem()
-    awg_ch1.avalable_memory()
-    awg_ch1.load_awf('multisine2', multisine)
-    awg_ch1.select_awf('multisine2')
-    awg_ch1.set_amplitude(0.01)
-    awg_ch1.set_offset(0)
-    awg_ch1.set_Z_out_infinite()
-    # awg_ch1.disconect()
