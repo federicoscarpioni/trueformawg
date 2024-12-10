@@ -99,14 +99,20 @@ class TrueFormAWG():
     def set_Z_out(self, z_out):
         self.device.write(':OUTPut%d:LOAD %s' % (self.channel, z_out))
 
-    def combine_channels(self, base_channel, source_channel):
+    def combine_channels(self, source_channel = 'CH2'):
         '''
-        Combine the signals digitally before sending to the DAC.
+        Combine the signals digitally before sending to the DAC. Source channel
+        must a be a string 'CH1' or 'CH2' (or 'NONE')
         '''
-        self.device.write(':SOURce%d:COMBine:FEED%d'% (base_channel, source_channel))
+        if self.channel == 1:
+            pass
+        elif self.channel == 2:
+            source_channel = 'CH1'
+        self.device.write(':SOURce%d:COMBine:FEED %s' % (self.channel, source_channel))
+
 
     def set_indipendent(self):
-        self.device.write(':SOURce%d:COMBine:FEED%d' % (self.channel, None))
+        self.device.write(':SOURce%d:COMBine:FEED %s' % (self.channel, 'NONE'))
 
     def turn_on(self):
         self.device.write(':OUTPut%d %d' % (self.channel, 1)) 
