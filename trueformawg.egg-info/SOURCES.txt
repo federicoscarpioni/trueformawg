@@ -1,7 +1,0 @@
-LICENSE
-README.md
-setup.py
-trueformawg.egg-info/PKG-INFO
-trueformawg.egg-info/SOURCES.txt
-trueformawg.egg-info/dependency_links.txt
-trueformawg.egg-info/top_level.txt
