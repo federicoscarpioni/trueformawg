@@ -1,4 +1,4 @@
-from trueformawg.trueformawg import TrueFormAWG, VISAdevices, import_awg_txt
+from trueformawg import TrueFormAWG, VISAdevices, import_awg_txt
 
 awgs = VISAdevices()
 
