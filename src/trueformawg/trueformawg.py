@@ -145,3 +145,4 @@ def import_awg_txt(multisine_path):
     multisine = multisine.astype(np.float32)
     multisine = multisine.tolist()
     return multisine
+    
