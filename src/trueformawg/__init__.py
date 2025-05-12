@@ -116,10 +116,11 @@ class TrueFormAWG():
 
     def turn_on(self):
         self.device.write(':OUTPut%d %d' % (self.channel, 1)) 
-        
+        print('Awg turned on')
                         
     def turn_off(self):
         self.device.write(':OUTPut%d %d' % (self.channel, 0)) 
+        print('Awg turned off')
         
     def disconnect(self):
         self.device.close()
