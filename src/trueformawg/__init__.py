@@ -110,7 +110,6 @@ class TrueFormAWG():
             source_channel = 'CH1'
         self.device.write(':SOURce%d:COMBine:FEED %s' % (self.channel, source_channel))
 
-
     def set_indipendent(self):
         self.device.write(':SOURce%d:COMBine:FEED %s' % (self.channel, 'NONE'))
 
