@@ -27,7 +27,7 @@ class TrueFormAWG():
     def __init__(self, address, channel_num):
         # Initialize attributes
         self.address = address
-        self.channel = channel_num
+        self.channel_num = channel_num
         
         # Perform the connection
         self.rm = pyvisa.ResourceManager()
